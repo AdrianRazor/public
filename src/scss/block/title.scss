@@ -1,0 +1,15 @@
+.title {
+  font-family: 'Arial', serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 60px;
+  line-height: 100%;
+  color: #000;
+  text-transform: uppercase;
+}
+
+@media (max-width: 767px) {
+  .title {
+    font-size: 32px;
+  }
+}
