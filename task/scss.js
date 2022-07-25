@@ -11,7 +11,7 @@ const sassGlob = require("gulp-sass-glob");
 
 // Обработка SCSS
 const scss = () => {
-  return src("./src/scss/*.{sass,scss}")
+  return src("./src/scss/*.{sass,scss,css}")
     .pipe(plumber())
     .pipe(sassGlob())
     .pipe(sass())

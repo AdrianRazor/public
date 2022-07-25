@@ -7,7 +7,6 @@ const cssimport = require("gulp-cssimport");
 const autoprefixer = require("gulp-autoprefixer");
 const csso = require("gulp-csso");
 const rename = require("gulp-rename");
-const shorthand = require("gulp-shorthand");
 const groupCssMediaQueries = require("gulp-group-css-media-queries");
 
 // Обработка CSS
@@ -20,9 +19,8 @@ const css = () => {
     .pipe(groupCssMediaQueries())
     .pipe(dest("./public/css"))
     .pipe(rename({ suffix: ".min" }))
-    .pipe(shorthand())
     .pipe(csso())
     .pipe(dest("./public/css"));
-}
+};
 
 module.exports = css;
