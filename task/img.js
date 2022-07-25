@@ -7,11 +7,10 @@ const newer = require("gulp-newer");
 
 // Обработка Image
 const img = () => {
-  return src("./src/img/*.{png,jpg,jpeg,webp,gif,svg}")
-    .pipe(plumber())  
+  return src("./src/img/**/*.*")
+    .pipe(plumber())
     .pipe(newer("./public/img"))
-    .pipe(imagemin())
     .pipe(dest("./public/img"));
-}
+};
 
 module.exports = img;

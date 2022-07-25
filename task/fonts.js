@@ -13,7 +13,7 @@ const fonts = () => {
     .pipe(newer("./public/fonts"))
     .pipe(
       fonter({
-        formats: ["ttf", "woff", "eot", "svg"],
+        formats: ["ttf", "woff", "svg"],
       })
     )
     .pipe(dest("./public/fonts"))

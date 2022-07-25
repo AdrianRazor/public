@@ -14,10 +14,7 @@ const watcher = () => {
   watch("./src/html/**/*.html", html).on("all", browserSync.reload);
   watch("./src/scss/**/*.scss", scss).on("all", browserSync.reload);
   watch("./src/js/**/*.js", js).on("all", browserSync.reload);
-  watch("./src/img/**/*.{png,jpg,jpeg,webp,gif,svg}", img).on(
-    "all",
-    browserSync.reload
-  );
+  watch("./src/img/**/*.*", img).on("all", browserSync.reload);
   watch("./src/fonts/**/*.{eot,ttf,otf,otc,ttc,woff,woff2,svg}", img).on(
     "all",
     browserSync.reload
