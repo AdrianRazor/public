@@ -2,7 +2,6 @@ const { src, dest } = require("gulp");
 
 // Плагины
 const plumber = require("gulp-plumber");
-const imagemin = require("gulp-imagemin");
 const newer = require("gulp-newer");
 
 // Обработка Image
