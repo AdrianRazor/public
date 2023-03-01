@@ -8,6 +8,7 @@ const scss = require("./task/scss.js");
 const js = require("./task/js.js");
 const img = require("./task/img.js");
 const fonts = require("./task/fonts.js");
+const libs = require("./task/libs.js");
 
 // Наблюдение
 const watcher = () => {
@@ -19,6 +20,7 @@ const watcher = () => {
     "all",
     browserSync.reload
   );
+  watch("./src/libs/**/*", libs).on("all", browserSync.reload);
 };
 
 // Сервер
@@ -36,12 +38,13 @@ exports.scss = scss;
 exports.js = js;
 exports.img = img;
 exports.fonts = fonts;
+exports.libs = libs;
 exports.watch = watcher;
 exports.clear = clear;
 
 // Сборка
 exports.dev = series(
   clear,
-  parallel(html, scss, js, img, fonts),
+  parallel(html, scss, js, img, fonts, libs),
   parallel(watcher, server)
 );
