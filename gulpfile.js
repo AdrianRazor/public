@@ -9,10 +9,6 @@ import sass from "gulp-dart-sass";
 import sourcemaps from "gulp-sourcemaps";
 import uglify from "gulp-uglify";
 
-// import { createRequire } from "module";
-// const require = createRequire(import.meta.url);
-// sass.compiler = require("sass");
-
 // HTML task
 export function html() {
   return gulp
@@ -23,17 +19,15 @@ export function html() {
 
 // SCSS task
 export function scss() {
-  return (
-    gulp
-      .src("src/scss/*.scss")
-      .pipe(sourcemaps.init())
-      .pipe(sass().on("error", sass.logError))
-      .pipe(autoprefixer())
-      // .pipe(cssnano())
-      .pipe(sourcemaps.write())
-      .pipe(gulp.dest("dist/css/"))
-      .pipe(browserSync.stream())
-  );
+  return gulp
+    .src("src/scss/*.scss")
+    .pipe(sourcemaps.init())
+    .pipe(sass().on("error", sass.logError))
+    .pipe(autoprefixer())
+    .pipe(cssnano())
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest("dist/css/"))
+    .pipe(browserSync.stream());
 }
 
 // JS task
