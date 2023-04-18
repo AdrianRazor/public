@@ -1,50 +1,100 @@
-const { watch, series, parallel } = require("gulp");
-const browserSync = require("browser-sync").create();
+import gulp from "gulp";
+import autoprefixer from "gulp-autoprefixer";
+import browserSync from "browser-sync";
+import concat from "gulp-concat";
+import cssnano from "gulp-cssnano";
+import del from "del";
+import imagemin from "gulp-imagemin";
+import sass from "gulp-dart-sass";
+import sourcemaps from "gulp-sourcemaps";
+import uglify from "gulp-uglify";
 
-// Задачи
-const clear = require("./task/clear.js");
-const html = require("./task/html.js");
-const scss = require("./task/scss.js");
-const js = require("./task/js.js");
-const img = require("./task/img.js");
-const fonts = require("./task/fonts.js");
-const libs = require("./task/libs.js");
+// import { createRequire } from "module";
+// const require = createRequire(import.meta.url);
+// sass.compiler = require("sass");
 
-// Наблюдение
-const watcher = () => {
-  watch("./src/html/**/*.html", html).on("all", browserSync.reload);
-  watch("./src/scss/**/*.scss", scss).on("all", browserSync.reload);
-  watch("./src/js/**/*.js", js).on("all", browserSync.reload);
-  watch("./src/img/**/*.*", img).on("all", browserSync.reload);
-  watch("./src/fonts/**/*.{eot,ttf,otf,otc,ttc,woff,woff2,svg}", img).on(
-    "all",
-    browserSync.reload
+// HTML task
+export function html() {
+  return gulp
+    .src("src/**/*.html")
+    .pipe(gulp.dest("dist/"))
+    .pipe(browserSync.stream());
+}
+
+// SCSS task
+export function scss() {
+  return (
+    gulp
+      .src("src/scss/*.scss")
+      .pipe(sourcemaps.init())
+      .pipe(sass().on("error", sass.logError))
+      .pipe(autoprefixer())
+      // .pipe(cssnano())
+      .pipe(sourcemaps.write())
+      .pipe(gulp.dest("dist/css/"))
+      .pipe(browserSync.stream())
   );
-  watch("./src/libs/**/*", libs).on("all", browserSync.reload);
-};
+}
 
-// Сервер
-const server = () => {
+// JS task
+export function js() {
+  return gulp
+    .src("src/js/**/*.js")
+    .pipe(concat("main.js"))
+    .pipe(uglify())
+    .pipe(gulp.dest("dist/js/"))
+    .pipe(browserSync.stream());
+}
+
+// Image task
+export function img() {
+  return gulp
+    .src("src/img/**/*")
+    .pipe(imagemin())
+    .pipe(gulp.dest("dist/img/"))
+    .pipe(browserSync.stream());
+}
+
+// Fonts task
+export function fonts() {
+  return gulp
+    .src("src/fonts/**/*")
+    .pipe(gulp.dest("dist/fonts/"))
+    .pipe(browserSync.stream());
+}
+
+// Libs task
+export function libs() {
+  return gulp
+    .src("src/libs/**/*")
+    .pipe(gulp.dest("dist/libs/"))
+    .pipe(browserSync.stream());
+}
+
+// Clean task
+export function clean() {
+  return del(["dist"]);
+}
+
+// Watch task
+export function watch() {
   browserSync.init({
     server: {
-      baseDir: "./public",
+      baseDir: "./dist/",
     },
   });
-};
 
-// Задачи
-exports.html = html;
-exports.scss = scss;
-exports.js = js;
-exports.img = img;
-exports.fonts = fonts;
-exports.libs = libs;
-exports.watch = watcher;
-exports.clear = clear;
+  gulp.watch("src/**/*.html", html).on("all", browserSync.reload);
+  gulp.watch("src/scss/**/*.scss", scss).on("all", browserSync.reload);
+  gulp.watch("src/js/**/*.js", js).on("all", browserSync.reload);
+  gulp.watch("src/img/**/*", img);
+  gulp.watch("src/fonts/**/*", fonts);
+  gulp.watch("src/libs/**/*", libs);
+}
 
-// Сборка
-exports.dev = series(
-  clear,
-  parallel(html, scss, js, img, fonts, libs),
-  parallel(watcher, server)
+// Default task
+export const dev = gulp.series(
+  clean,
+  gulp.parallel(html, scss, js, img, fonts, libs),
+  watch
 );
