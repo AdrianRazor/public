@@ -44,7 +44,6 @@ export function js() {
 export function img() {
   return gulp
     .src("src/img/**/*")
-    .pipe(imagemin())
     .pipe(gulp.dest("dist/img/"))
     .pipe(browserSync.stream());
 }
